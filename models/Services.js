@@ -1,6 +1,6 @@
-const { Schema, model, Types } = require("mongoose");
+const { Schema, model } = require("mongoose");
 
-// Optional time slot schema if you want per-date times
+// Optional time slot schema (with date + time)
 const slotSchema = new Schema({
   date: {
     type: Date,
@@ -8,8 +8,8 @@ const slotSchema = new Schema({
   },
   timeSlots: [
     {
-      from: { type: String, required: true }, // e.g. "10:00"
-      to: { type: String, required: true },   // e.g. "11:00"
+      from: { type: String, required: true },  // e.g. "10:00"
+      to: { type: String, required: true },    // e.g. "11:00"
       isBooked: { type: Boolean, default: false }
     }
   ]
@@ -23,13 +23,10 @@ const serviceSchema = new Schema({
   description: { type: String, default: "" },
   isAvailable: { type: Boolean, default: true },
 
-  staff: [{ type: Types.ObjectId, ref: "Staff" }],
+  staff: [{ type: String, trim: true }],  // Array of staff names
 
-  // Available dates without time
-  availableDates: [{ type: Date }],
-
-  // Optional: full calendar with time slots
-  schedule: [slotSchema]
+  availableDates: [{ type: Date }],       // Optional: simple date list
+  schedule: [slotSchema]                  // Optional: full schedule with time slots
 });
 
 const Service = model("Service", serviceSchema);
