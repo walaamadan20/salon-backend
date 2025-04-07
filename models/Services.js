@@ -21,10 +21,11 @@ const serviceSchema = new Schema({
   ],
 
 
+ 
   user: {
     type: Types.ObjectId,
     ref: "User",
-      required: true
+    required: true 
 
   }
 });
@@ -32,3 +33,9 @@ const serviceSchema = new Schema({
 const Service = model("Service", serviceSchema);
 
 module.exports = Service;
+
+
+
+
+
+
