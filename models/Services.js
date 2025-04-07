@@ -1,10 +1,6 @@
-const { Schema, model } = require("mongoose");
+const { Schema, model, Types } = require("mongoose");
 
-const timeOptions = [
-  "09:00", "10:00", "11:00", "12:00",
-  "13:00", "14:00", "15:00", "16:00",
-  "17:00", "18:00"
-];
+const timeOptions = [ "09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00", "18:00" ];
 
 const serviceSchema = new Schema({
   name: { type: String, required: true, trim: true },
@@ -16,18 +12,20 @@ const serviceSchema = new Schema({
 
   staff: [{ type: String, trim: true }],
 
-  // Schedule: date + one selectable time + booking status
   schedule: [
     {
       date: { type: Date, required: true },
-      time: {
-        type: String,
-        enum: timeOptions,
-        required: true
-      },
-      isBooked: { type: Boolean, default: false }
+      time: { type: String, enum: timeOptions, required: true },
+      isBooked: { type: Boolean, default: false },
     }
-  ]
+  ],
+
+  // 🔗 الربط مع اليوزر
+  user: {
+    type: Types.ObjectId,
+    ref: "User",
+    required: true // إذا الخدمة دايم تكون مملوكة من يوزر
+  }
 });
 
 const Service = model("Service", serviceSchema);
