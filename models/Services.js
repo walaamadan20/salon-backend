@@ -20,14 +20,20 @@ const serviceSchema = new Schema({
     }
   ],
 
-  // 🔗 الربط مع اليوزر
+ 
   user: {
     type: Types.ObjectId,
     ref: "User",
-    required: true // إذا الخدمة دايم تكون مملوكة من يوزر
+    required: true 
   }
 });
 
 const Service = model("Service", serviceSchema);
 
 module.exports = Service;
+
+
+
+
+
+

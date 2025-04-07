@@ -9,6 +9,7 @@ const testJwtRouter = require("./controllers/test-jwt")
 const authRoutes = require("./controllers/auth.routes")
 const verifyToken = require("./middleware/verify-token")
 const productsRoutes = require("./controllers/product.routes")
+const servicesRoutes = require("./controllers/services.routes")
 
 
 mongoose.connect(process.env.MONGODB_URI);
@@ -24,6 +25,7 @@ app.use(logger('dev'));
 // Routes go here
 app.use("/auth",authRoutes)
 app.use("/product",productsRoutes)
+app.use("/services",servicesRoutes)
 
 app.use("/test-jwt",verifyToken,testJwtRouter)
 
