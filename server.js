@@ -10,9 +10,9 @@ const authRoutes = require("./controllers/auth.routes")
 const verifyToken = require("./middleware/verify-token")
 const productsRoutes = require("./controllers/product.routes")
 const servicesRoutes = require("./controllers/services.routes")
+const orderRoutes = require("./routes/orderRoutes");
 
 
-mongoose.connect(process.env.MONGODB_URI);
 
 mongoose.connection.on('connected', () => {
   console.log(`Connected to MongoDB ${mongoose.connection.name}.`);
@@ -26,6 +26,8 @@ app.use(logger('dev'));
 app.use("/auth",authRoutes)
 app.use("/product",productsRoutes)
 app.use("/services",servicesRoutes)
+app.use("/api/orders", orderRoutes);
+
 
 app.use("/test-jwt",verifyToken,testJwtRouter)
 
