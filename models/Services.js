@@ -20,10 +20,12 @@ const serviceSchema = new Schema({
     }
   ],
 
+
   user: {
     type: Types.ObjectId,
     ref: "User",
       required: true
+
   }
 });
 
