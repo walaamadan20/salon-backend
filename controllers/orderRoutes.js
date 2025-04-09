@@ -3,7 +3,6 @@ const Order = require("../models/order");
 const Product = require("../models/Products");
 const verifyToken = require("../middleware/verify-token");
 
-// ✅ Get all orders for the logged-in user
 router.get("/", verifyToken, async (req, res) => {
   try {
     const orders = await Order.find({ user: req.user._id }).populate("Products.product");
@@ -13,7 +12,6 @@ router.get("/", verifyToken, async (req, res) => {
   }
 });
 
-// ✅ Get one specific order by ID
 router.get("/:orderId", verifyToken, async (req, res) => {
   try {
     const foundOrder = await Order.findOne({
@@ -50,6 +48,7 @@ router.post("/", verifyToken, async (req, res) => {
       await productData.save();
 
       totalPrice += productData.price * item.quantity;
+      productData.quantity-= item.quantity;
     }
 
     const newOrder = await Order.create({
@@ -64,7 +63,7 @@ router.post("/", verifyToken, async (req, res) => {
   }
 });
 
-// ✅ Delete an order (only by the owner)
+
 router.delete("/:orderId", verifyToken, async (req, res) => {
   try {
     const foundOrder = await Order.findById(req.params.orderId);
