@@ -1,19 +1,24 @@
-const jwt = require("jsonwebtoken")
-// This route checks the token in the request and verifies it for me
-function verifyToken(req,res,next){
-    try{
+const jwt = require("jsonwebtoken");
 
-        const token = req.headers.authorization.split(" ")[1]
-            
-        const decoded = jwt.verify(token,process.env.JWT_SECRET)
+function verifyToken(req, res, next) {
+  const authHeader = req.headers.authorization;
 
-        req.user = decoded.payload
+  if (!authHeader) {
+    return res.status(401).json({ err: "No token provided" });
+  }
 
-        next()
-    }catch(err){
-        // if there is any error we will send back this error message
-        res.status(401).json({err: "invalid Token"})
-    }
+  const token = authHeader.split(" ")[1]; // Get token after "Bearer"
+
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+
+    // ✅ FIX: Assign decoded directly (no more decoded.payload)
+    req.user = decoded.payload;
+
+    next();
+  } catch (err) {
+    res.status(401).json({ err: "Invalid Token" });
+  }
 }
 
-module.exports = verifyToken
+module.exports = verifyToken;

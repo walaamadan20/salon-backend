@@ -1,3 +1,4 @@
+//product.routes.js
 const router = require('express').Router()
 const Product = require("../models/Products")
 const verifyToken = require("../middleware/verify-token")
@@ -23,16 +24,19 @@ router.get("/:productId", async (req, res) => {
 })
 // Create product (admin only)
 router.post("/new", verifyToken, async (req, res) => {
-    try {
-        if (!req.user.isAdmin) {
-            return res.status(403).json({err: "Only admins can create products"})
-        }
-        const newProduct = await Product.create(req.body)
-        res.status(201).json(newProduct)
-    } catch(err) {
-        res.status(500).json({err: err.message})
+  try {
+    if (!req.user.isAdmin) {
+      return res.status(403).json({ err: "Only admins can create products" });
     }
-})
+
+    const newProduct = await Product.create(req.body);
+    res.status(201).json(newProduct);
+  } catch (err) {
+    res.status(500).json({ err: err.message });
+  }
+});
+
+
 // Update product (admin only)
 router.put("/:productId", verifyToken, async (req, res) => {
     try {
