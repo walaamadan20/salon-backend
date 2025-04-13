@@ -7,6 +7,7 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 const logger = require('morgan');
 
+
 // Routers
 const authRoutes = require("./controllers/auth.routes");
 const productsRoutes = require("./controllers/product.routes");
@@ -41,14 +42,22 @@ app.use(cors());
 app.use(express.json());
 app.use(logger("dev"));
 
-// Routes
-app.use("/auth", authRoutes);
-app.use("/product", productsRoutes);
+// Routes go here
+app.use("/auth",authRoutes)
+app.use("/product",productsRoutes)
+app.use("/services",servicesRoutes)
 app.use("/api/orders", orderRoutes);
 app.use("/test-jwt", verifyToken, testJwtRouter);
+
 
 // Server Start
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`🚀 The express app is ready on http://localhost:${PORT}`);
+
+
+app.use("/test-jwt",verifyToken,testJwtRouter)
+
+
+
 });

@@ -5,9 +5,26 @@ const bcrypt = require("bcrypt")
 const jwt = require("jsonwebtoken")
 const verifyToken = require("../middleware/verify-token")
 
-router.post("/sign-up", async (req, res) => {
-  try {
-    const foundUser = await User.findOne({ username: req.body.username });
+
+router.post("/sign-up",async(req,res)=>{
+    try{
+        const foundUser = await User.findOne({username:req.body.username})
+        
+        if(foundUser){
+            return res.status(409).json({err:"username already taken"})
+        }
+        const createdUser = await User.create({
+            username:req.body.username,
+            hashedPassword: bcrypt.hashSync(req.body.password,12),
+            isAdmin:req.body.isAdmin
+        })
+        console.log(createdUser)
+
+
+        const convertedObject = createdUser.toObject()
+        delete convertedObject.hashedPassword
+        res.json(convertedObject)
+
 
     if (foundUser) {
       return res.status(409).json({ err: "username already taken" });

@@ -2,6 +2,7 @@
 const router = require('express').Router()
 const Product = require("../models/Products")
 const verifyToken = require("../middleware/verify-token")
+
 // Get all products (public access)
 router.get("/", async (req, res) => {
     try {
