@@ -5,12 +5,15 @@ const verifyToken = require("../middleware/verify-token");
 
 router.get("/", verifyToken, async (req, res) => {
   try {
-    const orders = await Order.find({ user: req.user._id }).populate("Products.product");
-    res.json(orders);
+    const filter = req.user.isAdmin ? {} : { user: req.user._id };
+
+    const orders = await Order.find(filter).populate("products.product");
+    res.json(orders.reverse());
   } catch (err) {
     res.status(500).json({ err: err.message });
   }
 });
+
 
 router.get("/:orderId", verifyToken, async (req, res) => {
   try {
