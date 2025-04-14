@@ -2,18 +2,21 @@ const router = require("express").Router();
 const Order = require("../models/order");
 const Product = require("../models/Products");
 const verifyToken = require("../middleware/verify-token");
+const mongoose = require("mongoose")
+// const Products = require("../models/Products");
 
-// ✅ Get all orders for the logged-in user
 router.get("/", verifyToken, async (req, res) => {
   try {
-    const orders = await Order.find({ user: req.user._id }).populate("Products.product");
-    res.json(orders);
+    const filter = req.user.isAdmin ? {} : { user: req.user._id };
+    const orders = await Order.find(filter).populate("products.product");
+    console.log(orders)
+    res.json(orders.reverse());
   } catch (err) {
     res.status(500).json({ err: err.message });
   }
 });
 
-// ✅ Get one specific order by ID
+
 router.get("/:orderId", verifyToken, async (req, res) => {
   try {
     const foundOrder = await Order.findOne({
@@ -46,10 +49,13 @@ router.post("/", verifyToken, async (req, res) => {
         return res.status(400).json({ error: `Not enough stock for ${productData.name}` });
       }
 
+    
+
       productData.stock -= item.quantity;
       await productData.save();
 
       totalPrice += productData.price * item.quantity;
+      productData.quantity-= item.quantity;
     }
 
     const newOrder = await Order.create({
@@ -64,7 +70,7 @@ router.post("/", verifyToken, async (req, res) => {
   }
 });
 
-// ✅ Delete an order (only by the owner)
+
 router.delete("/:orderId", verifyToken, async (req, res) => {
   try {
     const foundOrder = await Order.findById(req.params.orderId);
