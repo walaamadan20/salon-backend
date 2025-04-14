@@ -5,7 +5,17 @@ const express = require('express');
 const app = express();
 const mongoose = require('mongoose');
 const cors = require('cors');
-const logger = require('morgan');
+
+const logger = require('morgan')
+const testJwtRouter = require("./controllers/test-jwt")
+const authRoutes = require("./controllers/auth.routes")
+const verifyToken = require("./middleware/verify-token")
+const productsRoutes = require("./controllers/product.routes")
+const servicesRoutes = require("./controllers/services.routes")
+const orderRoutes = require("./controllers/orderRoutes");
+const bookingRoutes = require("./controllers/bookings");
+
+
 
 
 // Routers
@@ -47,6 +57,9 @@ app.use("/auth",authRoutes)
 app.use("/product",productsRoutes)
 app.use("/services",servicesRoutes)
 app.use("/api/orders", orderRoutes);
+
+app.use("/api/bookings", bookingRoutes);
+
 app.use("/test-jwt", verifyToken, testJwtRouter);
 
 
@@ -54,6 +67,7 @@ app.use("/test-jwt", verifyToken, testJwtRouter);
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`🚀 The express app is ready on http://localhost:${PORT}`);
+
 
 
 app.use("/test-jwt",verifyToken,testJwtRouter)

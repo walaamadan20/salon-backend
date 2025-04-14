@@ -2,12 +2,14 @@ const router = require("express").Router();
 const Order = require("../models/order");
 const Product = require("../models/Products");
 const verifyToken = require("../middleware/verify-token");
+const mongoose = require("mongoose")
+// const Products = require("../models/Products");
 
 router.get("/", verifyToken, async (req, res) => {
   try {
     const filter = req.user.isAdmin ? {} : { user: req.user._id };
-
     const orders = await Order.find(filter).populate("products.product");
+    console.log(orders)
     res.json(orders.reverse());
   } catch (err) {
     res.status(500).json({ err: err.message });
@@ -46,6 +48,8 @@ router.post("/", verifyToken, async (req, res) => {
       if (productData.stock < item.quantity) {
         return res.status(400).json({ error: `Not enough stock for ${productData.name}` });
       }
+
+    
 
       productData.stock -= item.quantity;
       await productData.save();
