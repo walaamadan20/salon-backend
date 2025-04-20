@@ -55,7 +55,7 @@ router.post("/", verifyToken, async (req, res) => {
       await productData.save();
 
       totalPrice += productData.price * item.quantity;
-      productData.quantity-= item.quantity;
+    //   productData.quantity-= item.quantity;
     }
 
     const newOrder = await Order.create({
@@ -91,3 +91,4 @@ router.delete("/:orderId", verifyToken, async (req, res) => {
 });
 
 module.exports = router;
+ 

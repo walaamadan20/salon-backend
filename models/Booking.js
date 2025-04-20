@@ -9,7 +9,7 @@ const bookingSchema = new Schema({
   },
   serviceId: {
     type: Types.ObjectId,
-    ref: "Services",
+    ref: "Service",
     required: true
   },
   staff: { type: String,
