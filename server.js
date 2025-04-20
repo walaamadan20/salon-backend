@@ -10,8 +10,9 @@ const authRoutes = require("./controllers/auth.routes")
 const verifyToken = require("./middleware/verify-token")
 const productsRoutes = require("./controllers/product.routes")
 const servicesRoutes = require("./controllers/services.routes")
-const orderRoutes = require("./controllers/orderRoutes");
 const bookingRoutes = require("./controllers/bookings");
+const orderRoutes = require("./controllers/orderRoutes")
+const confirmedorderroute = require("./controllers/confirmedOrderRouter")
 
 
 mongoose.connect(process.env.MONGODB_URI)
@@ -28,8 +29,9 @@ app.use(logger('dev'));
 app.use("/auth",authRoutes)
 app.use("/product",productsRoutes)
 app.use("/services",servicesRoutes)
-app.use("/api/orders", orderRoutes);
+app.use("/api/orders", orderRoutes );
 app.use("/api/bookings", bookingRoutes);
+app.use("/api/confirmed-orders",confirmedorderroute )
 
 
 
