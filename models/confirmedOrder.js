@@ -1,6 +1,6 @@
 const { Schema, model, Types } = require("mongoose");
 
-const orderSchema = new Schema({
+const confirmedOrderSchema = new Schema({
   user: {
     type: Types.ObjectId,
     ref: "User",
@@ -8,9 +8,7 @@ const orderSchema = new Schema({
   },
   products: [
     {
-
-      product: { type: Types.ObjectId, ref: "Products"},
-
+      product: { type: Types.ObjectId, ref: "Products" },
       quantity: { type: Number, default: 1 }
     }
   ],
@@ -18,12 +16,12 @@ const orderSchema = new Schema({
     type: Number,
     required: true
   },
-  createdAt: {
+  confirmedAt: {
     type: Date,
     default: Date.now
   }
 });
 
-const Order = model("Order", orderSchema);
+const ConfirmedOrder = model("ConfirmedOrder", confirmedOrderSchema);
 
-module.exports = Order;
+module.exports = ConfirmedOrder;
