@@ -35,7 +35,6 @@ router.post("/login",async(req,res)=>{
     // destructure the req.body
     const {username,password} = req.body
     try{
-        // 1. check if the user already signed up
         const foundUser = await User.findOne({username})
 
         // if there isnt a user this means that the user hasnt signed up yet
@@ -43,12 +42,10 @@ router.post("/login",async(req,res)=>{
             return res.status(401).json({err:"username not signed up. Please sign up"})
         }
 
-        // 2. check if the password given in the req.body matches the passowrd in the DB
         const isPasswordMatch = bcrypt.compareSync(password,foundUser.hashedPassword)
         if(!isPasswordMatch){
             return res.status(401).json({err:"username or password incorrect"})
         }
-        // 3. create the JWT token
         const payload = foundUser.toObject()
         delete payload.hashedPassword
         console.log("Login1")
