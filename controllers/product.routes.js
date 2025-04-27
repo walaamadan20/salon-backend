@@ -11,7 +11,6 @@ router.get("/", async (req, res) => {
         res.status(500).json({err: err.message})
     }
 })
-// Get single product (public access)
 router.get("/:productId", async (req, res) => {
     try {
         const foundProduct = await Product.findById(req.params.productId)
@@ -20,7 +19,6 @@ router.get("/:productId", async (req, res) => {
         res.status(500).json({err: err.message})
     }
 })
-// Create product (admin only)
 router.post("/new", verifyToken, async (req, res) => {
     try {
         if (!req.user.isAdmin) {
@@ -32,7 +30,6 @@ router.post("/new", verifyToken, async (req, res) => {
         res.status(500).json({err: err.message})
     }
 })
-// Update product (admin only)
 router.put("/:productId", verifyToken, async (req, res) => {
     try {
         if (!req.user.isAdmin) {
@@ -48,7 +45,6 @@ router.put("/:productId", verifyToken, async (req, res) => {
         res.status(500).json({err: err.message})
     }
 })
-// Delete product (admin only)
 router.delete("/:productId", verifyToken, async (req, res) => {
     try {
         if (!req.user.isAdmin) {
